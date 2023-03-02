@@ -6,7 +6,7 @@
     Erick Sebastian Mora 
 """
 
-def busqueda(grafo, nodoInicio, nodoFin):
+def costo(grafo, nodoInicio, nodoFin):
     #Funcion de busqueda para encontrar el camino mas rapido
     costos = {}
     #Se crea un diccionario vacio para almacenar los costos de cada nodo
@@ -27,10 +27,30 @@ def busqueda(grafo, nodoInicio, nodoFin):
                 costos[nodoAsociado] = nuevoCosto
                 cola.append(nodoAsociado)
 
+def todosCaminos(grafo, nodoInicio, nodoFin):
+    caminos = []
+    pila = [(nodoInicio, [nodoInicio])]
+    while pila:
+        nodoActual, camino = pila.pop()
+        if nodoActual == nodoFin:
+            caminos.append(camino)
+        else:
+            for nodo in grafo.get(nodoActual, []):
+                if nodo not in camino:
+                    pila.append((nodo, camino + [nodo]))
+    return caminos
 
+def imprimirRutas(inicio, fin, caminosPosible, costo):
+    # Imprimir los costos
+    print("Todos los caminos entre '{}' y '{}' son:".format(inicio, fin))
+    for i, camino in enumerate(caminosPosible):
+        print("Camino", i+1, ":", " -> ".join(camino))
+        #print("Camino {}: {}".format(i+1, camino))
+
+    print("El costo mínimo desde '{}' hasta '{}' es: {}".format(inicio, fin, costo))
 # El grafo se representa como un diccionario de diccionarios
 
-if __name__ == '__main__':
+def generarGrafo():
 
     grafo ={
         'Despertar' : {'Levantarse': 1},
@@ -49,13 +69,16 @@ if __name__ == '__main__':
         'Asistir a Modelos' : {},
 
     }
+    return grafo
+
+if __name__ == '__main__':
 
     # Inicio y fin de las actividades
     inicio = 'Despertar'
     fin = 'Asistir a Modelos'
+    grafo = generarGrafo()
+    caminosPosibles = todosCaminos(grafo, inicio, fin)
+    costoMinimo = costo(grafo, inicio, fin)
 
-# Ejecutar el algoritmo y almacenar el costo mínimo
-costoMinimo = busqueda(grafo, inicio, fin)
+    imprimirRutas(inicio, fin, caminosPosibles, costoMinimo)
 
-# Imprimir los costos
-print("El costo mínimo desde '{}' hasta '{}' es: {}".format(inicio, fin, costoMinimo))
