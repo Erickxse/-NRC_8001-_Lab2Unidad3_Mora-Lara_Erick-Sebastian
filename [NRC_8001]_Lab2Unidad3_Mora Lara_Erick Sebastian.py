@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     # Inicio y fin de las actividades
     inicio = 'Despertar'
-    fin = 'Asistir a Modelos'
+    fin = 'Llegar a la Universidad'
     grafo = generarGrafo()
     caminosPosibles = todosCaminos(grafo, inicio, fin)
     costoMinimo = costo(grafo, inicio, fin)
